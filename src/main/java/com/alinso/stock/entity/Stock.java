@@ -1,12 +1,10 @@
-package com.alinso.stock.entity.stock;
+package com.alinso.stock.entity;
 
 import com.alinso.stock.entity.BaseEntity;
-import com.alinso.stock.entity.category.Category;
-import com.alinso.stock.entity.order.Order;
-import com.alinso.stock.entity.shelf.Shelf;
+import com.alinso.stock.entity.Category;
+import com.alinso.stock.entity.Shelf;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -27,17 +25,18 @@ public class Stock extends BaseEntity {
     }
 
     @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinTable(name="stocksshelves"
+    @JoinTable(name="stockShelve"
             ,joinColumns = @JoinColumn(name="shelfId")
             ,inverseJoinColumns = @JoinColumn(name="stockId"))
     private List<Shelf> shelves;
 
 
+    /*
     @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinTable(name="stocksOrder"
+    @JoinTable(name="stockOrder"
             ,joinColumns = @JoinColumn(name="orderId")
             ,inverseJoinColumns = @JoinColumn(name="stockId"))
-    private List<Order> orders;
+    private List<Order> orders;*/
 
     @ManyToOne(fetch = FetchType.LAZY) //optional= ?
     @JoinColumn(name = "category")
@@ -64,13 +63,8 @@ public class Stock extends BaseEntity {
         this.shelves = shelves;
     }
 
-    public List<Order> getOrders() {
-        return orders;
-    }
 
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
+
 
     public Category getCategory() {
         return category;

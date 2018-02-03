@@ -1,4 +1,4 @@
-package com.alinso.stock.entity.order;
+package com.alinso.stock.entity;
 
 import com.alinso.stock.entity.BaseEntity;
 
@@ -11,12 +11,8 @@ import java.io.Serializable;
  * Created by KHAN on 2.02.2018.
  */
 @Entity
-@Table(name="order")
-/**
- * Namı Diğer Tır Class
- * TODO: Başka ne var?
- */
-public class Order extends BaseEntity {
+@Table(name="category")
+public class Category extends BaseEntity{
 
     @Column(name="name")
     private String name;

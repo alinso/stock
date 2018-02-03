@@ -1,7 +1,6 @@
-package com.alinso.stock.controller.shelf;
+package com.alinso.stock.controller;
 
-import com.alinso.stock.dao.shelf.ShelfDao;
-import com.alinso.stock.entity.shelf.Shelf;
+import com.alinso.stock.entity.Shelf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

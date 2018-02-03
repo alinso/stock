@@ -1,7 +1,7 @@
-package com.alinso.stock.dao.shelf;
+package com.alinso.stock.dao;
 
-import com.alinso.stock.dao.AbstractDAO;
-import com.alinso.stock.entity.shelf.Shelf;
+import com.alinso.stock.dao.BaseDAO;
+import com.alinso.stock.entity.Shelf;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public class ShelfDao extends AbstractDAO<Shelf> {
+public class ShelfDao extends BaseDAO<Shelf> {
 //    TODO: AbstractDao dışında kullanılacak database işlemleri
 }

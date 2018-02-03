@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import javax.transaction.Transactional;
 
 @Repository
-public class UserDAO extends AbstractDAO<User>{
+public class UserDAO extends BaseDAO<User>{
 
 
     @Transactional

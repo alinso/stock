@@ -1,4 +1,4 @@
-package com.alinso.stock.entity.shelf;
+package com.alinso.stock.entity;
 
 import com.alinso.stock.entity.BaseEntity;
 

@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Component
-public class AbstractDAO< T extends Serializable> {
+public class BaseDAO< T extends Serializable> {
 
 
     @PersistenceContext
