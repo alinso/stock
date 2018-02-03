@@ -1,4 +1,4 @@
-package com.alinso.stock.service;
+package com.alinso.stock.controller;
 
 import com.alinso.stock.dao.UserDAO;
 import com.alinso.stock.entity.User;

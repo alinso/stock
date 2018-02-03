@@ -12,7 +12,9 @@ public class UserDAO extends AbstractDAO<User>{
 
     @Transactional
     public User getByUsername(String username) {
-        User usr = (User) entityManager.createQuery("from User where username=:username").setParameter("username", username).getSingleResult();
+        User usr = (User) entityManager
+                .createQuery("from User where username=:username")
+                .setParameter("username", username).getSingleResult();
         return usr;
     }
 }

@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name="user")
-public class User  extends BaseEntity implements Serializable{
+public class User  extends BaseEntity{
 
 
 
