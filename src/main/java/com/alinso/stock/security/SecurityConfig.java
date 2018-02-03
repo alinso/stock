@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 @Configuration
@@ -48,14 +49,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .failureUrl("/login/error")
                 .successHandler(customSuccessHandler);
 
+        http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/logout.done").deleteCookies("JSESSIONID")
+                .invalidateHttpSession(true);
 
         //remember me configuration
-        http.rememberMe().
+      /*  http.rememberMe().
                 key("rem-me-key").
-                tokenValiditySeconds(86400);
+                tokenValiditySeconds(86400);*/
 
 
-        http.logout().logoutSuccessUrl("/login/logout");
 
 
 

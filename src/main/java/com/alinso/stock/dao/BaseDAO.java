@@ -11,11 +11,15 @@ import java.util.List;
 @Component
 public class BaseDAO< T extends Serializable> {
 
+    public void setTheClass(Class theClassToSet){
+        theClass = theClassToSet;
+    }
 
     @PersistenceContext
     EntityManager entityManager;
 
     private Class< T > theClass;
+
 
 
     @Transactional

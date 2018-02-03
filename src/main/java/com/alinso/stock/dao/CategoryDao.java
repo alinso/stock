@@ -9,5 +9,9 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class CategoryDao extends BaseDAO<Category> {
+
+    public CategoryDao(){
+        super.setTheClass(Category.class);
+    }
 //    TODO: AbstractDao Dışında Kullanılacaklar
 }

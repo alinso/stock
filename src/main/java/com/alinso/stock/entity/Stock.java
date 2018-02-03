@@ -11,7 +11,7 @@ import java.util.List;
  * Created by KHAN on 2.02.2018.
  */
 @Entity
-@Table(name="stock")
+@Table(name="user")
 public class Stock extends BaseEntity {
 
     @Column(name="productName")

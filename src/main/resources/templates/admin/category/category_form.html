@@ -1,0 +1,22 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head lang="en" th:replace="fragments/admin_header :: head"> </head>
+<body>
+<nav th:replace="fragments/admin_header :: menu"></nav>
+
+
+<div class="col-md-10 col-md-offset-1">
+    <h3 th:text="*{title}"></h3>
+    <br/>
+    <form action="#" th:action="@{/user/category/save}" th:object="${category}" method="post">
+        <div class="form-group">
+            <label for="name">Kategori Adı</label>
+            <input type="text" class="form-controller" th:field="*{name}">
+        </div>
+    <input type="hidden" th:field="*{id}">
+        <button type="submit" class="btn btn-primary">Kaydet</button>
+    </form>
+</div>
+<div th:replace="fragments/admin_footer :: footer"></div>
+</body>
+</html>
