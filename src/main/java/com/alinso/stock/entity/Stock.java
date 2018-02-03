@@ -14,6 +14,7 @@ import java.util.List;
 @Table(name="user")
 public class Stock extends BaseEntity {
 
+    //TODO: Validationlar eklenecek
     @Column(name="productName")
     private String productName;
 

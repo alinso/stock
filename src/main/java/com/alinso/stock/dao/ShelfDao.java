@@ -10,5 +10,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class ShelfDao extends BaseDAO<Shelf> {
+    ShelfDao(){
+        super.setTheClass(Shelf.class);
+    }
 //    TODO: AbstractDao dışında kullanılacak database işlemleri
 }

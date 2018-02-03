@@ -5,6 +5,7 @@ import com.alinso.stock.entity.BaseEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 /**
@@ -15,6 +16,7 @@ import java.io.Serializable;
 public class Category extends BaseEntity{
 
     @Column(name="name")
+    @NotEmpty(message = "Bu Alan Boş Geçilemez!")
     private String name;
 
     public String getName() {
