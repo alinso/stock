@@ -4,18 +4,22 @@
 <body>
 <nav th:replace="fragments/admin_header :: menu"></nav>
 
-
-<div class="col-md-10 col-md-offset-1">
-    <h3 th:text="*{title}"></h3>
-    <br/>
-    <form action="#" th:action="@{/user/category/save}" th:object="${category}" method="post">
-        <div class="form-group">
-            <label for="name">Kategori Adı</label>
-            <input type="text" class="form-controller" th:field="*{name}">
-        </div>
-    <input type="hidden" th:field="*{id}">
-        <button type="submit" class="btn btn-primary">Kaydet</button>
-    </form>
+<h3 th:text="*{title}"></h3>
+<div class="container" style="max-width:600px;padding:40px 20px;background:#ebeff2">
+    <div class="col-md-10 col-md-offset-1">
+        <strong>Kategori Ekle</strong>
+        <br>
+        <br>
+        <form class="form-inline" action="#" th:action="@{/user/category/save}" th:object="${category}" method="post">
+            <div class="form-group">
+                <label for="name">Kategori Adı</label>
+                <input id="name" type="text" class="form-control" th:field="*{name}">
+                <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Age Error</span>
+            </div>
+            <input type="hidden" th:field="*{id}">
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+        </form>
+    </div>
 </div>
 <div th:replace="fragments/admin_footer :: footer"></div>
 </body>

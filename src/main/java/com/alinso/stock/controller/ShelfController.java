@@ -23,7 +23,7 @@ public class ShelfController {
 
     @RequestMapping
     public String shelfGet(Model model){
-        model.addAttribute("title","Raflar");
+        model.addAttribute("title","Raf");
         model.addAttribute(new Shelf());
         return "admin/shelf/shelf_form";
     }
@@ -34,7 +34,8 @@ public class ShelfController {
             return "admin/shelf/shelf_form";
         }
         shelfDao.saveOrUpdate(shelf);
-        return "admin/shelf/shelf_form";
+        model.addAttribute("shelf",shelf);
+        return "admin/shelf/shelf_save_confirm";
     }
 
     @RequestMapping(value="list")
@@ -51,14 +52,21 @@ public class ShelfController {
     }
 
     @RequestMapping(value="update/{id}",method=RequestMethod.GET)
-    public String updateShelf(@PathVariable("id") int id,BindingResult bindingResult,Model model){
+    public String updateShelfPage(@PathVariable("id") int id,Model model){
         Shelf shelf=shelfDao.get(id);
-        if(shelf==null){
-            bindingResult.reject("Böyle bir kayıt Bulunmamaktadır!");
-            return this.getShelves(model);
-        }
         model.addAttribute("shelfUpdated",shelf);
         return "admin/shelf/shelf_update";
     }
+
+    @RequestMapping(value="update",method = RequestMethod.POST)
+    public String updateShelf(@Valid @ModelAttribute Shelf shelf,BindingResult bindingResult,Model model){
+        if(bindingResult.hasErrors()){
+            return this.updateShelfPage(shelf.getId(),model);
+        }
+        shelfDao.saveOrUpdate(shelf);
+        model.addAttribute("shelf",shelf);
+        return "admin/shelf/shelf_update_confirm";
+    }
+
 
 }
