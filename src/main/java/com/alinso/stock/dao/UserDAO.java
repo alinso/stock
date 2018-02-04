@@ -9,6 +9,9 @@ import javax.transaction.Transactional;
 @Repository
 public class UserDAO extends BaseDAO<User>{
 
+    UserDAO(){
+        super.setTheClass(User.class);
+    }
 
     @Transactional
     public User getByUsername(String username) {

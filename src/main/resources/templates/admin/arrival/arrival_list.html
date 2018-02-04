@@ -1,0 +1,39 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head lang="en" th:replace="fragments/admin_header :: head"> </head>
+<body>
+<nav th:replace="fragments/admin_header :: menu"></nav>
+
+<br>
+<br>
+
+<div class="container">
+    <div class="table-responsive">
+        <!--<h3 th:text="*{title}"></h3>-->
+       <table class="table table-striped" border="1">
+           <thead class="table-info">
+           <tr>
+               <th>#</th>
+                <th>Sipariş Adı</th>
+               <th>İşlem</th>
+           </tr>
+           </thead>
+           <tbody>
+               <tr th:each="arrival,iter:*{arrivals}">
+                   <td th:text="${iter.index+1}"></td>
+                   <td th:text="${arrival.arrivalDate}"></td>
+                   <td>
+                       <a class='btn btn-info' th:href="@{/user/arrival/update/}+${arrival.id}">Düzenle</a>
+                       <!--<form th:action="@{/user/arrival/delete}" method="delete">-->
+                           <!--<input type="hidden"  th:value="${arrival.id}"/>-->
+                           <!--<input type="submit" class='btn btn-danger' value="Sil"/>-->
+                       <!--</form>-->
+                   </td>
+               </tr>
+           </tbody>
+       </table>
+    </div>
+</div>
+<div th:replace="fragments/admin_footer :: footer"></div>
+</body>
+</html>

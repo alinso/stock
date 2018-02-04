@@ -35,6 +35,16 @@ public class Auth {
 
 
 
+    @Transactional
+    public User getCurrentUser(){
+        if(this.getId()>0) {
+            int id = this.getId();
+            User user = userDAO.get(id);
+            return user;
+        }
+        else
+            return null;
+    }
 
     @Transactional
     public String getUsername(){

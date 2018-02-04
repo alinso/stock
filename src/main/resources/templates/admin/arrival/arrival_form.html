@@ -1,0 +1,27 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head lang="en" th:replace="fragments/admin_header :: head"> </head>
+<body>
+<nav th:replace="fragments/admin_header :: menu"></nav>
+
+<h3 th:text="*{title}"></h3>
+<div class="container" style="max-width:600px;padding:40px 20px;background:#ebeff2">
+    <div class="col-md-10 col-md-offset-1">
+        <strong>Siparis Ekle</strong>
+        <br>
+        <br>
+        <form class="form-inline" action="#" th:action="@{/user/arrival/save}" th:object="${arrival}" method="post">
+            <div class="form-group">
+                <label for="arrivalDate">Siparis Adı</label>
+                <input id="arrivalDate" type="text" class="form-control" th:field="*{arrivalDate}">
+                <span th:if="${#fields.hasErrors('arrivalDate')}" th:errors="*{arrivalDate}">Age Error</span>
+            </div>
+            <input type="hidden" th:field="*{id}">
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+        </form>
+
+    </div>
+</div>
+<div th:replace="fragments/admin_footer :: footer"></div>
+</body>
+</html>

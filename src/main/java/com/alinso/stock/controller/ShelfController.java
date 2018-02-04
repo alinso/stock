@@ -2,6 +2,7 @@ package com.alinso.stock.controller;
 
 import com.alinso.stock.dao.ShelfDao;
 import com.alinso.stock.entity.Shelf;
+import com.alinso.stock.security.Auth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,9 @@ import java.util.List;
 public class ShelfController {
 
     @Autowired
+    Auth auth;
+
+    @Autowired
     ShelfDao shelfDao;
 
     @RequestMapping
@@ -33,6 +37,7 @@ public class ShelfController {
         if(bindingResult.hasErrors()){
             return "admin/shelf/shelf_form";
         }
+        shelf.setCreateUser(auth.getCurrentUser());
         shelfDao.saveOrUpdate(shelf);
         model.addAttribute("shelf",shelf);
         return "admin/shelf/shelf_save_confirm";
@@ -54,6 +59,8 @@ public class ShelfController {
     @RequestMapping(value="update/{id}",method=RequestMethod.GET)
     public String updateShelfPage(@PathVariable("id") int id,Model model){
         Shelf shelf=shelfDao.get(id);
+
+        shelf.setUpdateUser(auth.getCurrentUser());
         model.addAttribute("shelfUpdated",shelf);
         return "admin/shelf/shelf_update";
     }
