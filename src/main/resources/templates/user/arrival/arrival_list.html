@@ -8,30 +8,32 @@
 <br>
 
 <div class="container">
+    <a th:href="*{addNewLink}"> <button  class="btn btn-success">Yeni Ekle</button></a>
     <div class="table-responsive">
-        <!--<h3 th:text="*{title}"></h3>-->
-       <table class="table table-striped" border="1">
+
+        <table class="table table-striped" border="1">
            <thead class="table-info">
            <tr>
                <th>#</th>
-                <th>Kategori Adı</th>
+                <th>Sipariş Adı</th>
                <th>İşlem</th>
            </tr>
            </thead>
            <tbody>
-               <tr th:each="category,iter:*{categories}">
+               <tr th:each="arrival,iter:*{entities}">
                    <td th:text="${iter.index+1}"></td>
-                   <td th:text="${category.name}"></td>
+                   <td th:text="${arrival.arrivalDate}"></td>
                    <td>
-                       <a class='btn btn-info' th:href="@{/user/category/update/}+${category.id}">Düzenle</a>
-                       <!--<form th:action="@{/user/category/delete}" method="delete">-->
-                           <!--<input type="hidden"  th:value="${category.id}"/>-->
+                       <a class='btn btn-info' th:href="@{/user/arrival/}+${arrival.id}">Düzenle</a>
+                       <!--<form th:action="@{/user/arrival/delete}" method="delete">-->
+                           <!--<input type="hidden"  th:value="${arrival.id}"/>-->
                            <!--<input type="submit" class='btn btn-danger' value="Sil"/>-->
                        <!--</form>-->
                    </td>
                </tr>
            </tbody>
        </table>
+
     </div>
 </div>
 <div th:replace="fragments/admin_footer :: footer"></div>

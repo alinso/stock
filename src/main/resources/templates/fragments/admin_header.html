@@ -24,45 +24,20 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Giriş <span class="sr-only">(current)</span></a>
-                </li>
+
                 <li class="nav-item">
                     <a class="nav-link" href="#">Ürünler</a>
                 </li>
+
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Sipariş Tarihleri</a>
+                    <a class="nav-link" th:href="@{/user/arrival/list}">Sipariş</a>
                 </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="arrivalDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Sipariş Tarihleri
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="arrivalcategoryDropdownMenuLink">
-                        <a class="dropdown-item"  th:href="@{/user/arrival}">Yeni Ekle</a>
-                        <a class="dropdown-item"  th:href="@{/user/arrival/list}">Listele</a>
-                    </div>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/user/category/list}">Kategori</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="categoryDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Kategoriler
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="categoryDropdownMenuLink">
-                        <a class="dropdown-item"  th:href="@{/user/category}">Yeni Ekle</a>
-                        <a class="dropdown-item"  th:href="@{/user/category/list}">Listele</a>
-                    </div>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/user/shelf/list}">Raf</a>
                 </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="shelfDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Raflar
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="shelfDropdownMenuLink">
-                        <a class="dropdown-item"  th:href="@{/user/shelf}">Yeni Ekle</a>
-                        <a class="dropdown-item"  th:href="@{/user/shelf/list}">Listele</a>
-                    </div>
-                </li>
-
             </ul>
         </div>
     </nav>

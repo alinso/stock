@@ -1,5 +1,6 @@
 package com.alinso.stock.controller;
 
+import com.alinso.stock.common.Util;
 import com.alinso.stock.dao.ArrivalDao;
 import com.alinso.stock.entity.Arrival;
 import com.alinso.stock.security.Auth;
@@ -10,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -19,69 +21,70 @@ import java.util.List;
 
 @Controller
 @RequestMapping("user/arrival")
-public class ArrivalController {
+public class ArrivalController extends BaseController {
     @Autowired
     private ArrivalDao arrivalDao;
 
     @Autowired
     Auth auth;
 
-
-    @RequestMapping
-    public String arrivalGet(Model model){
-        model.addAttribute("title","Sipariş Tarihi");
-        model.addAttribute(new Arrival());
-        return "admin/arrival/arrival_form";
+    @PostConstruct
+    public void ArrivalControllerPC(){
+        super.setLinks("arrival");
+        super.setTitles("Arrival");
+        super.setTheClass(Arrival.class, arrivalDao);
     }
 
-    @RequestMapping(value = "save",method = RequestMethod.POST)
-    public String arrivalPost(@Valid @ModelAttribute Arrival arrival, BindingResult bindingResult, Model model){
+    @RequestMapping(value="/{id}",method=RequestMethod.GET)
+    public String show(@PathVariable("id") int id,Model model) throws InstantiationException, IllegalAccessException {
+
+        Arrival arrival = (Arrival) setEntity(id);
+        model = setShowFormModel(model,arrival);
+        return "user/arrival/form";
+    }
+
+
+    @RequestMapping(value="save",method = RequestMethod.POST)
+    public String save(@Valid @ModelAttribute Arrival arrival,BindingResult bindingResult,Model model) throws IllegalAccessException, InstantiationException {
         if(bindingResult.hasErrors()){
-            return "admin/arrival/arrival_form";
+            return this.show(arrival.getId(),model);
         }
-//        TODO: Dynamic or More Understandable
+        //        TODO: Dynamic or More Understandable
         if(arrivalDao.getArrivalCount(auth.getCurrentUser())>=3){
             bindingResult.rejectValue("arrivalDate","","En fazla 3 sipariş tarihi!");
-            return "admin/arrival/arrival_form";
+            return "admin/arrival/form";
         }
 
         arrival.setCreateUser(auth.getCurrentUser());
-        arrivalDao.saveOrUpdate(arrival);
-        model.addAttribute("arrival",arrival);
-        return "admin/arrival/arrival_save_confirm";
+
+        try {
+            arrivalDao.saveOrUpdate(arrival);
+            model.addAttribute("message", Util.saveSuccessMessage);
+        }catch (Exception e){
+            model.addAttribute("message",Util.saveErrorMessage);
+        }
+        model.addAttribute("title",createTitle);
+
+        return "user/arrival/form";
     }
 
+
     @RequestMapping(value="list")
-    public String getArrivals(Model model){
-        List<Arrival> arrivals=arrivalDao.getAll();
-        model.addAttribute("arrivals",arrivals);
-        return "admin/arrival/arrival_list";
+    public String list(Model model){
+        model  = setListModel(model);
+        return "user/arrival/arrival_list";
+    }
+
+    @RequestMapping(value="save",method = RequestMethod.GET)
+    public String saveGetRedirect(Model md) throws IllegalAccessException, InstantiationException {
+        return this.show(0,md);
     }
 
     //Not Allowed Yet
     @RequestMapping(value = "delete",method = RequestMethod.DELETE)
     public String deleteArrival(@RequestAttribute int id, Model model ){
-        return this.getArrivals(model);
+        return this.list(model);
     }
 
-    @RequestMapping(value="update/{id}",method=RequestMethod.GET)
-    public String updateArrivalPage(@PathVariable("id") int id, Model model){
-        Arrival arrival=arrivalDao.get(id);
-        model.addAttribute("arrivalUpdated",arrival);
-        return "admin/arrival/arrival_update";
-    }
-
-    @RequestMapping(value="update",method = RequestMethod.POST)
-    public String updateArrival(@Valid @ModelAttribute Arrival arrival, BindingResult bindingResult, Model model){
-        if(bindingResult.hasErrors()){
-            return this.updateArrivalPage(arrival.getId(),model);
-        }
-
-        //FIXME: Kullaanıcı güncelle sayfasından kayıt atıyor
-        arrival.setUpdateUser(auth.getCurrentUser());
-        arrivalDao.saveOrUpdate(arrival);
-        model.addAttribute("arrival",arrival);
-        return "admin/arrival/arrival_update_confirm";
-    }
 
 }

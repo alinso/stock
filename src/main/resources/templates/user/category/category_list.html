@@ -8,24 +8,27 @@
 <br>
 
 <div class="container">
+    <a th:href="*{addNewLink}"> <button  class="btn btn-success">Yeni Ekle</button></a>
+
     <div class="table-responsive">
-        <!--<h3 th:text="*{title}"></h3>-->
+        <h3 th:text="*{title}"></h3>
+
        <table class="table table-striped" border="1">
            <thead class="table-info">
            <tr>
                <th>#</th>
-                <th>Raf Adı</th>
+                <th>Kategori Adı</th>
                <th>İşlem</th>
            </tr>
            </thead>
            <tbody>
-               <tr th:each="shelf,iter:*{shelves}">
+               <tr th:each="category,iter:*{entities}">
                    <td th:text="${iter.index+1}"></td>
-                   <td th:text="${shelf.name}"></td>
+                   <td th:text="${category.name}"></td>
                    <td>
-                       <a class='btn btn-info' th:href="@{/user/shelf/update/}+${shelf.id}">Düzenle</a>
-                       <!--<form th:action="@{/user/shelf/delete}" method="delete">-->
-                           <!--<input type="hidden"  th:value="${shelf.id}"/>-->
+                       <a class='btn btn-info' th:href="@{/user/category/}+${category.id}">Düzenle</a>
+                       <!--<form th:action="@{/user/category/delete}" method="delete">-->
+                           <!--<input type="hidden"  th:value="${category.id}"/>-->
                            <!--<input type="submit" class='btn btn-danger' value="Sil"/>-->
                        <!--</form>-->
                    </td>

@@ -1,5 +1,6 @@
 package com.alinso.stock.controller;
 
+import com.alinso.stock.common.Util;
 import com.alinso.stock.dao.ShelfDao;
 import com.alinso.stock.entity.Shelf;
 import com.alinso.stock.security.Auth;
@@ -9,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -17,7 +19,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/user/shelf")
-public class ShelfController {
+public class ShelfController extends BaseController {
 
     @Autowired
     Auth auth;
@@ -25,54 +27,57 @@ public class ShelfController {
     @Autowired
     ShelfDao shelfDao;
 
-    @RequestMapping
-    public String shelfGet(Model model){
-        model.addAttribute("title","Raf");
-        model.addAttribute(new Shelf());
-        return "admin/shelf/shelf_form";
+    @PostConstruct
+    public void ShelfControllerPC(){
+        super.setLinks("shelf");
+        super.setTitles("Raf");
+        super.setTheClass(Shelf.class,shelfDao);
     }
 
-    @RequestMapping(value = "save",method = RequestMethod.POST)
-    public String shelfPost(@Valid @ModelAttribute Shelf shelf, BindingResult bindingResult, Model model){
+
+    @RequestMapping(value="/{id}",method=RequestMethod.GET)
+    public String show(@PathVariable("id") int id,Model model) throws InstantiationException, IllegalAccessException {
+        Shelf shelf = (Shelf) setEntity(id);
+        model = setShowFormModel(model,shelf);
+        return "user/shelf/form";
+    }
+
+
+    @RequestMapping(value="save",method = RequestMethod.POST)
+    public String save(@Valid @ModelAttribute Shelf shelf,BindingResult bindingResult,Model model) throws IllegalAccessException, InstantiationException {
         if(bindingResult.hasErrors()){
-            return "admin/shelf/shelf_form";
+            return this.show(shelf.getId(),model);
         }
+
         shelf.setCreateUser(auth.getCurrentUser());
-        shelfDao.saveOrUpdate(shelf);
-        model.addAttribute("shelf",shelf);
-        return "admin/shelf/shelf_save_confirm";
+
+        try {
+            shelfDao.saveOrUpdate(shelf);
+            model.addAttribute("message",Util.saveSuccessMessage);
+        }catch (Exception e){
+            model.addAttribute("message",Util.saveErrorMessage);
+        }
+        model.addAttribute("title",createTitle);
+
+
+        return "user/shelf/form";
     }
 
     @RequestMapping(value="list")
-    public String getShelves(Model model){
-        List<Shelf> shelves=shelfDao.getAll();
-        model.addAttribute("shelves",shelves);
-        return "admin/shelf/shelf_list";
+    public String list(Model model){
+        model  = setListModel(model);
+        return "user/shelf/shelf_list";
     }
 
     //Not Allowed Yet
     @RequestMapping(value = "delete",method = RequestMethod.DELETE)
-    public String deleteShelf(@RequestAttribute int id, Model model ){
-        return this.getShelves(model);
+    public String deleteShelf(@RequestAttribute int id, Model model ) throws IllegalAccessException, InstantiationException {
+        return this.show(0,model);
     }
 
-    @RequestMapping(value="update/{id}",method=RequestMethod.GET)
-    public String updateShelfPage(@PathVariable("id") int id,Model model){
-        Shelf shelf=shelfDao.get(id);
-
-        shelf.setUpdateUser(auth.getCurrentUser());
-        model.addAttribute("shelfUpdated",shelf);
-        return "admin/shelf/shelf_update";
-    }
-
-    @RequestMapping(value="update",method = RequestMethod.POST)
-    public String updateShelf(@Valid @ModelAttribute Shelf shelf,BindingResult bindingResult,Model model){
-        if(bindingResult.hasErrors()){
-            return this.updateShelfPage(shelf.getId(),model);
-        }
-        shelfDao.saveOrUpdate(shelf);
-        model.addAttribute("shelf",shelf);
-        return "admin/shelf/shelf_update_confirm";
+    @RequestMapping(value="save",method = RequestMethod.GET)
+    public String saveGetRedirect(Model md) throws IllegalAccessException, InstantiationException {
+        return this.show(0,md);
     }
 
 

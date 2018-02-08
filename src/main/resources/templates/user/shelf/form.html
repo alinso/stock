@@ -7,10 +7,9 @@
 <h3 th:text="*{title}"></h3>
 <div class="container" style="max-width:600px;padding:40px 20px;background:#ebeff2">
     <div class="col-md-10 col-md-offset-1">
-        <strong>Raf Ekle</strong>
         <br>
-        <br>
-        <form class="form-inline" action="#" th:action="@{/user/shelf/save}" th:object="${shelf}" method="post">
+        <span id="formResultMessage" th:text="*{message}"></span>
+        <form class="form-inline" action="#" th:action="@{/user/shelf/save}" th:object="${entity}" method="post">
             <div class="form-group">
                 <label for="name">Raf Adı</label>
                 <input id="name" type="text" class="form-control" th:field="*{name}">

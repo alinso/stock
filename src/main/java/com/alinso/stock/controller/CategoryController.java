@@ -1,5 +1,6 @@
 package com.alinso.stock.controller;
 
+import com.alinso.stock.common.Util;
 import com.alinso.stock.dao.CategoryDao;
 import com.alinso.stock.entity.Category;
 import com.alinso.stock.security.Auth;
@@ -9,12 +10,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @RequestMapping("user/category")
-public class CategoryController {
+public class CategoryController extends BaseController {
 
     @Autowired
     Auth auth;
@@ -22,53 +23,55 @@ public class CategoryController {
     @Autowired
     CategoryDao categoryDao;
 
-    @RequestMapping
-    public String categoryGet(Model model){
-        model.addAttribute("title","Kategori");
-        model.addAttribute(new Category());
-        return "admin/category/category_form";
+
+    @PostConstruct
+    public void CategoryControllerPC(){
+        super.setLinks("category");
+        super.setTitles("Kategori");
+        super.setTheClass(Category.class, categoryDao);
     }
 
-    @RequestMapping(value = "save",method = RequestMethod.POST)
-    public String categoryPost(@Valid @ModelAttribute Category category, BindingResult bindingResult, Model model){
-        if(bindingResult.hasErrors()){
-            return "admin/category/category_form";
-        }
-        category.setCreateUser(auth.getCurrentUser());
-        categoryDao.saveOrUpdate(category);
-        model.addAttribute("category",category);
-        return "admin/category/category_save_confirm";
+    @RequestMapping(value="/{id}",method=RequestMethod.GET)
+    public String show(@PathVariable("id") int id,Model model) throws InstantiationException, IllegalAccessException {
+        Category category = (Category) setEntity(id);
+         model = setShowFormModel(model,category);
+        return "user/category/form";
     }
+
 
     @RequestMapping(value="list")
-    public String getCategories(Model model){
-        List<Category> categories=categoryDao.getAll();
-        model.addAttribute("categories",categories);
-        return "admin/category/category_list";
+    public String list(Model model){
+        model  = setListModel(model);
+        return "user/category/category_list";
     }
 
     //Not Allowed Yet
     @RequestMapping(value = "delete",method = RequestMethod.DELETE)
-    public String deleteCategory(@RequestAttribute int id, Model model ){
-        return this.getCategories(model);
+    public String delete(@RequestAttribute int id, Model model ){
+        return this.list(model);
     }
 
-    @RequestMapping(value="update/{id}",method=RequestMethod.GET)
-    public String updateCategoryPage(@PathVariable("id") int id,Model model){
-        Category category=categoryDao.get(id);
-        model.addAttribute("categoryUpdated",category);
-        return "admin/category/category_update";
+    @RequestMapping(value="save",method = RequestMethod.GET)
+    public String saveGetRedirect(Model md) throws IllegalAccessException, InstantiationException {
+        return this.show(0,md);
     }
 
-    @RequestMapping(value="update",method = RequestMethod.POST)
-    public String updateCategory(@Valid @ModelAttribute Category category,BindingResult bindingResult,Model model){
+    @RequestMapping(value="save",method = RequestMethod.POST)
+    public String save(@Valid @ModelAttribute Category category,BindingResult bindingResult,Model model) throws IllegalAccessException, InstantiationException {
         if(bindingResult.hasErrors()){
-            return this.updateCategoryPage(category.getId(),model);
+            return this.show(category.getId(),model);
         }
 
-        category.setUpdateUser(auth.getCurrentUser());
-        categoryDao.saveOrUpdate(category);
-        model.addAttribute("category",category);
-        return "admin/category/category_update_confirm";
+        category.setCreateUser(auth.getCurrentUser());
+        try {
+            categoryDao.saveOrUpdate(category);
+            model.addAttribute("message",Util.saveSuccessMessage);
+        }catch (Exception e){
+            model.addAttribute("message",Util.saveErrorMessage);
+        }
+        model.addAttribute("title",createTitle);
+        model.addAttribute("entity",new Category());
+
+        return "user/category/form";
     }
 }
