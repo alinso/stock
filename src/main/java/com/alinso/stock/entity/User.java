@@ -1,5 +1,7 @@
 package com.alinso.stock.entity;
 
+import org.springframework.lang.Nullable;
+
 import javax.persistence.Entity;
 
 
@@ -23,7 +25,8 @@ public class User  extends BaseEntity{
     private String username;
 
     @Column(name = "is_active")
-    @NotNull
+//    @NotNull
+    @Nullable
     private int isActive;
 
 

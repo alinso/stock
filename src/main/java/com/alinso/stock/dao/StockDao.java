@@ -10,4 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class StockDao extends BaseDAO<Stock>{
 //    TODO: Abstract Dao dışında yapılacaklar
+    StockDao(){
+        super.setTheClass(Stock.class);
+    }
 }

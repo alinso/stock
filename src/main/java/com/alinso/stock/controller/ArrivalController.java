@@ -77,6 +77,7 @@ public class ArrivalController {
             return this.updateArrivalPage(arrival.getId(),model);
         }
 
+        //FIXME: Kullaanıcı güncelle sayfasından kayıt atıyor
         arrival.setUpdateUser(auth.getCurrentUser());
         arrivalDao.saveOrUpdate(arrival);
         model.addAttribute("arrival",arrival);
