@@ -16,8 +16,8 @@ public class StockShelf extends BaseEntity{
             @JoinColumn(name = "shelf")
     Shelf shelf;
 
-    @Column(name="productNumber")
-    Integer productNumber;
+    @Column(name="productAmount")
+    Integer productAmount;
 
     public Stock getStock() {
         return stock;
@@ -35,11 +35,11 @@ public class StockShelf extends BaseEntity{
         this.shelf = shelf;
     }
 
-    public Integer getProductNumber() {
-        return productNumber;
+    public Integer getProductAmount() {
+        return productAmount;
     }
 
-    public void setProductNumber(Integer productNumber) {
-        this.productNumber = productNumber;
+    public void setProductAmount(Integer productNumber) {
+        this.productAmount = productNumber;
     }
 }

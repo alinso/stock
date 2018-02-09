@@ -17,8 +17,8 @@ public class StockArrival extends BaseEntity {
     @JoinColumn(name="arrival")
     Arrival arrival;
 
-    @Column(name="productNumber")
-    private Integer productNumber;
+    @Column(name="productAmount")
+    private Integer productAmount;
 
     public Stock getStock() {
         return stock;
@@ -36,11 +36,11 @@ public class StockArrival extends BaseEntity {
         this.arrival = arrival;
     }
 
-    public Integer getProductNumber() {
-        return productNumber;
+    public Integer getProductAmount() {
+        return productAmount;
     }
 
-    public void setProductNumber(Integer productNumber) {
-        this.productNumber = productNumber;
+    public void setProductAmount(Integer productNumber) {
+        this.productAmount = productNumber;
     }
 }

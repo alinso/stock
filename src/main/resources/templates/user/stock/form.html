@@ -1,0 +1,53 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head lang="en" th:replace="fragments/admin_header :: head"> </head>
+<body>
+<nav th:replace="fragments/admin_header :: menu"></nav>
+<h3 th:text="*{title}"></h3>
+<div class="container" style="max-width:600px;padding:40px 20px;background:#ebeff2">
+    <div class="col-md-10 col-md-offset-1">
+        <strong>Stok Ekle</strong>
+        <br>
+        <br>
+
+        <form class="form-inline" action="/save" th:action="@{/user/stock/save}" th:object="${stockForm}" method="post">
+            <div class="form-group">
+                <label for="productCode">Ürün Kodu</label>
+                <input id="productCode" type="text" class="form-control" th:field="*{stock.productCode}">
+                <span th:if="${#fields.hasErrors('stock.productCode')}" th:errors="*{stock.productCode}">Age Error</span>
+            </div>
+            <div class="form-group">
+                <label for="productCode">Ürün Adı</label>
+                <input id="productCode" type="text" class="form-control" th:field="*{stock.productName}">
+                <span th:if="${#fields.hasErrors('stock.productName')}" th:errors="*{stock.productName}">Age Error</span>
+            </div>
+            <div class="form-group">
+                <table>
+                <tr th:each="currentStockArrival,i:*{stockArrivalList}">
+                    <td><span th:text="${currentStockArrival.arrival.arrivalDate}"></span> </td>
+                    <td> <input type="text" class="form-control" th:field="*{stockArrivalList[__${i.index}__].productAmount}"/></td>
+
+                </tr>
+                </table>
+            </div>
+            <div class="form-group">
+                <table>
+                    <tr th:each="currentStockShelf,i:*{stockShelfList}">
+                        <td><span th:text="${currentStockShelf.shelf.name}"></span> </td>
+                        <td> <input type="text" class="form-control" th:field="*{stockShelfList[__${i.index}__].productAmount}"/></td>
+
+                    </tr>
+                </table>
+            </div>
+
+
+
+            <!--<input type="hidden" th:field="*{id}">-->
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+        </form>
+
+    </div>
+</div>
+<div th:replace="fragments/admin_footer :: footer"></div>
+</body>
+</html>

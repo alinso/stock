@@ -1,6 +1,7 @@
 package com.alinso.stock.controller;
 
 import com.alinso.stock.dao.*;
+import com.alinso.stock.dto.StockFormDTO;
 import com.alinso.stock.entity.*;
 import com.alinso.stock.security.Auth;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,16 +48,60 @@ public class StockController {
         model.addAttribute("shelfList",shelfDao.getAll());
 //        model.addAttribute("categoryList",categoryDao.getAll());
 //        model.addAttribute("arrivalList",arrivalDao.getAll());
-//        model.addAttribute("stock",new Stock());
+        model.addAttribute("stock",new Stock());
         model.addAttribute("stockShelf",new StockShelf());
         return "admin/stock/stock_form";
     }
 
+
+    @RequestMapping(value="{id}",method=RequestMethod.GET)
+    public String show(@PathVariable("id") int id, Model model){
+        Stock stock= new Stock();
+        List<StockShelf> stockShelves  = new ArrayList<>();
+        List<StockArrival> stockArrivals =  new ArrayList<>();
+        List<Arrival> arrivals;
+        List<Shelf> shelves;
+        if(id==0){
+
+             stock=new Stock();
+             shelves = shelfDao.getAll();
+            arrivals = arrivalDao.getAll();
+
+            for(Shelf shelf: shelves){
+                StockShelf stockShelf  = new StockShelf();
+                stockShelf.setStock(stock);
+                stockShelf.setShelf(shelf);
+                stockShelves.add(stockShelf);
+            }
+            for(Arrival arrival  :arrivals){
+                StockArrival stockArrival =  new StockArrival();
+                stockArrival.setArrival(arrival);
+                stockArrival.setStock(stock);
+                stockArrivals.add(stockArrival);
+            }
+
+        }
+        StockFormDTO stockFormDTO =  new StockFormDTO();
+        stockFormDTO.setStock(stock);
+        stockFormDTO.setStockArrivalList(stockArrivals);
+        stockFormDTO.setStockShelfList(stockShelves);
+
+        model.addAttribute("stockForm",stockFormDTO);
+        model.addAttribute("stock",stock);
+        model.addAttribute("title", "Stok Ekle");
+
+        return "user/stock/form";
+
+
+
+    }
+
     @RequestMapping(value = "save",method = RequestMethod.POST)
-    public String stockPost(@Valid @ModelAttribute StockShelf stockShelf, BindingResult bindingResult, Model model){
+    public String stockPost(@Valid @ModelAttribute StockFormDTO stockFormDTO, BindingResult bindingResult, Model model){
         if(bindingResult.hasErrors()){
             return "admin/stock/stock_form";
         }
+        StockFormDTO s = stockFormDTO;
         return "admin/stock/stock_save_confirm";
     }
 
