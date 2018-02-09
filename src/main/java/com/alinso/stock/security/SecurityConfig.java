@@ -50,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .successHandler(customSuccessHandler);
 
         http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/logout.done").deleteCookies("JSESSIONID")
+                .logoutSuccessUrl("/login").deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true);
 
         //remember me configuration
