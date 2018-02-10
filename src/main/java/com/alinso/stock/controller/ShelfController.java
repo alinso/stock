@@ -60,7 +60,7 @@ public class ShelfController extends BaseController {
         model.addAttribute("title",createTitle);
 
 
-        return "user/shelf/form";
+        return this.show(0,model);
     }
 
     @RequestMapping(value="list")

@@ -52,7 +52,7 @@ public class ArrivalController extends BaseController {
         //        TODO: Dynamic or More Understandable
         if(arrivalDao.getArrivalCount(auth.getCurrentUser())>=3){
             bindingResult.rejectValue("arrivalDate","","En fazla 3 sipariş tarihi!");
-            return "admin/arrival/form";
+            return this.list(model);
         }
 
         arrival.setCreateUser(auth.getCurrentUser());

@@ -4,10 +4,23 @@
 <body>
 <nav th:replace="fragments/admin_header :: menu"></nav>
 
+
 <br>
 <br>
 
 <div class="container">
+
+    <br>
+    <form th:action="@{/user/stock/searchProductByCode}" method="get">
+        <div class="form-group col-md-4">
+            <label for="searchCode" >Ürün Kodu</label>
+            <input id="searchCode" class="form-control" name="searchCode" type="text"/>
+            <button type="submit" class="btn btn-primary">Ara</button>
+        </div>
+
+    </form>
+    <br>
+
     <a th:href="*{addNewLink}"> <button  class="btn btn-success">Yeni Ekle</button></a>
     <div class="table-responsive">
         <!--<h3 th:text="*{title}"></h3>-->
@@ -16,8 +29,8 @@
             <thead class="table-info">
             <tr>
                 <th>#</th>
-                <th>Ürün Adı</th>
                 <th>Ürün Kodu</th>
+                <th>Ürün Adı</th>
                 <th>İşlem</th>
 
             </tr>

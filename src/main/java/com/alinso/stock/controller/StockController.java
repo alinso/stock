@@ -51,6 +51,14 @@ public class StockController extends BaseController{
         super.setTheClass(Arrival.class, arrivalDao);
     }
 
+    @RequestMapping("searchProductByCode")
+    public String searchProductByName(@RequestParam("searchCode") String productCode,Model model){
+        List<Stock> stockList=stockDao.getStockListByCode(productCode);
+        model.addAttribute("entities",stockList);
+        model.addAttribute("addNewLink",this.addNewLink);
+        return "/user/stock/stock_list";
+    }
+
     @RequestMapping(value="update/{id}",method=RequestMethod.GET)
     public String show(@PathVariable("id") int id, Model model){
         List<StockShelf> stockShelves  = new ArrayList<>();
@@ -170,6 +178,7 @@ public class StockController extends BaseController{
     public String deleteStock(@RequestAttribute int id, Model model ){
         return this.getStocks(model);
     }
+
 
 
 
