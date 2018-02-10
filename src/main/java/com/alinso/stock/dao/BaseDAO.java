@@ -35,8 +35,9 @@ public class BaseDAO< T extends Serializable> {
     }
 
     @Transactional
-    public void saveOrUpdate( T entity ){
-        entityManager.merge( entity );
+    public T saveOrUpdate( T entity ){
+        T res  =entityManager.merge( entity );
+        return res;
     }
 
     @Transactional

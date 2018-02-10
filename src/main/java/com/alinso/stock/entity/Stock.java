@@ -1,6 +1,8 @@
 package com.alinso.stock.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -18,7 +20,8 @@ public class Stock extends BaseEntity {
     @Column(name="productName")
     private String productName;
 
-    @ManyToOne(fetch = FetchType.LAZY) //optional= ?
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) //optional= ?
     @JoinColumn(name = "category")
     private Category category;
 

@@ -65,7 +65,7 @@ public class ArrivalController extends BaseController {
         }
         model.addAttribute("title",createTitle);
 
-        return "user/arrival/form";
+        return show(0,model);
     }
 
 

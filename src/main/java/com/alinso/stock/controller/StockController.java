@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("user/stock")
-public class StockController {
+public class StockController extends BaseController{
 
     @Autowired
     StockDao stockDao;
@@ -42,17 +43,12 @@ public class StockController {
     @Autowired
     Auth auth;
 
-    @RequestMapping
-    public String stockGet(Model model){
-        model.addAttribute("title","Stoklar");
-        model.addAttribute("shelfList",shelfDao.getAll());
-//        model.addAttribute("categoryList",categoryDao.getAll());
-//        model.addAttribute("arrivalList",arrivalDao.getAll());
-        model.addAttribute("stock",new Stock());
-        model.addAttribute("stockShelf",new StockShelf());
-        return "admin/stock/stock_form";
+    @PostConstruct
+    public void StockControllerPC(){
+        super.setLinks("stock");
+        super.setTitles("Ürün");
+        super.setTheClass(Arrival.class, arrivalDao);
     }
-
 
     @RequestMapping(value="{id}",method=RequestMethod.GET)
     public String show(@PathVariable("id") int id, Model model){
@@ -88,6 +84,7 @@ public class StockController {
 
         model.addAttribute("stockForm",stockFormDTO);
         model.addAttribute("stock",stock);
+        model.addAttribute("categories",categoryDao.getAll());
         model.addAttribute("title", "Stok Ekle");
 
         return "user/stock/form";
@@ -96,20 +93,41 @@ public class StockController {
 
     }
 
+    @RequestMapping(value = "save",method = RequestMethod.GET)
+    public String saveGetRedirect(Model md){
+        return show(0, md);
+    }
+
+
     @RequestMapping(value = "save",method = RequestMethod.POST)
-    public String stockPost(@Valid @ModelAttribute StockFormDTO stockFormDTO, BindingResult bindingResult, Model model){
+    public String save(@Valid @ModelAttribute StockFormDTO stockFormDTO, BindingResult bindingResult, Model model){
         if(bindingResult.hasErrors()){
-            return "admin/stock/stock_form";
+            return "user/stock/form";
         }
-        StockFormDTO s = stockFormDTO;
-        return "admin/stock/stock_save_confirm";
+
+        Stock stock =  new Stock();
+        if(stockFormDTO.getStock().getId()!=0)
+            stock  =stockDao.get(stockFormDTO.getStock().getId());
+
+        Category category  = categoryDao.get(stockFormDTO.getStock().getCategory().getId());
+        stock.setCategory(category);
+        stock.setProductCode(stockFormDTO.getStock().getProductCode());
+        stock.setProductName(stockFormDTO.getStock().getProductName());
+        stock  =stockDao.saveOrUpdate(stock);
+
+        stockArrivalDao.sync(stockFormDTO.getStockArrivalList(),stock);
+        stockShelfDao.sync(stockFormDTO.getStockShelfList(),stock);
+        model.addAttribute("message","Kaydedildi,eklemeye devam edebilirsiniz!");
+        model.addAttribute("lastRecordId",stock.getId());
+        return show(0,model);
     }
 
     @RequestMapping(value="list")
     public String getStocks(Model model){
         List<Stock> stocks=stockDao.getAll();
-        model.addAttribute("stocks",stocks);
-        return "admin/stock/stock_list";
+        model.addAttribute("entities",stocks);
+        model.addAttribute("addNewLink",this.addNewLink);
+        return "user/stock/stock_list";
     }
 
     //Not Allowed Yet
@@ -118,23 +136,7 @@ public class StockController {
         return this.getStocks(model);
     }
 
-    @RequestMapping(value="update/{id}",method=RequestMethod.GET)
-    public String updateStockPage(@PathVariable("id") int id, Model model){
-        Stock stock=stockDao.get(id);
-        model.addAttribute("stockUpdated",stock);
-        return "admin/stock/stock_update";
-    }
 
-    @RequestMapping(value="update",method = RequestMethod.POST)
-    public String updateStock(@Valid @ModelAttribute Stock stock, BindingResult bindingResult, Model model){
-        if(bindingResult.hasErrors()){
-            return this.updateStockPage(stock.getId(),model);
-        }
 
-        stock.setUpdateUser(auth.getCurrentUser());
-        stockDao.saveOrUpdate(stock);
-        model.addAttribute("stock",stock);
-        return "admin/stock/stock_update_confirm";
-    }
 
 }
