@@ -28,7 +28,7 @@
                 <td th:text="${stock.productCode}"></td>
                 <td th:text="${stock.productName}"></td>
                 <td>
-                    <a class='btn btn-info' th:href="@{/user/stock/}+${stock.id}">Düzenle</a>
+                    <a class='btn btn-info' th:href="@{/user/stock/update/}+${stock.id}">Düzenle</a>
                     <!--<form th:action="@{/user/shelf/delete}" method="delete">-->
                     <!--<input type="hidden"  th:value="${shelf.id}"/>-->
                     <!--<input type="submit" class='btn btn-danger' value="Sil"/>-->

@@ -1,5 +1,6 @@
 package com.alinso.stock.dao;
 
+import com.alinso.stock.entity.Arrival;
 import com.alinso.stock.entity.Stock;
 import com.alinso.stock.entity.StockArrival;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,11 @@ public class StockArrivalDao extends BaseDAO<StockArrival>{
         super.setTheClass(StockArrival.class);
     }
 
+    @Autowired
+    ArrivalDao arrivalDao;
+
     @Transactional
-    public List<StockArrival> getByStockId(Stock stock){
+    public List<StockArrival> getByStock(Stock stock){
         Query q  =entityManager.createQuery("select s from StockArrival s where s.stock=:stock");
         q.setParameter("stock",stock);
 
@@ -28,21 +32,31 @@ public class StockArrivalDao extends BaseDAO<StockArrival>{
     }
 
     @Transactional
+    public StockArrival getByArrivalAndStock(Arrival arrival, Stock stock){
+        return  (StockArrival) entityManager.createQuery("from StockArrival where arrival=:arrival and stock=:stock")
+                .setParameter("arrival",arrival)
+                .setParameter("stock",stock)
+                .getSingleResult();
+
+    }
+
+    @Transactional
     public void sync(List<StockArrival> stockArrivalList, Stock stock){
-        List<StockArrival> stockArrivalList1  =getByStockId(stock);
+        List<StockArrival> stockArrivalList1  =getByStock(stock);
         entityManager.createQuery("delete from StockArrival where stock=:stock").setParameter("stock",stock).executeUpdate();
-        bulkInsert(stockArrivalList);
+        bulkInsert(stockArrivalList,stock);
     }
 
 
     @Transactional
-    public void bulkInsert(List<StockArrival> stockArrivalList){
+    public void bulkInsert(List<StockArrival> stockArrivalList,Stock stock){
         int batchSize = 30;
 
 
         Integer i=0;
         for (StockArrival stockArrival: stockArrivalList){
-
+            stockArrival.setStock(stock);
+            stockArrival.setArrival(arrivalDao.get(stockArrival.getArrival().getId()));
             entityManager.persist(stockArrival);
 
             if (i % batchSize == 0 && i > 0) {

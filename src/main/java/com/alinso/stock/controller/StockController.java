@@ -47,35 +47,73 @@ public class StockController extends BaseController{
     public void StockControllerPC(){
         super.setLinks("stock");
         super.setTitles("Ürün");
+        super.addNewLink  ="/user/stock/create";
         super.setTheClass(Arrival.class, arrivalDao);
     }
 
-    @RequestMapping(value="{id}",method=RequestMethod.GET)
+    @RequestMapping(value="update/{id}",method=RequestMethod.GET)
     public String show(@PathVariable("id") int id, Model model){
+        List<StockShelf> stockShelves  = new ArrayList<>();
+        List<StockArrival> stockArrivals =  new ArrayList<>();
+        List<Arrival> arrivals;
+        List<Shelf> shelves;
+
+        Stock  stock  =stockDao.get(id);
+             shelves = shelfDao.getAll();
+            arrivals = arrivalDao.getAll();
+
+            for(Shelf shelf: shelves){
+                StockShelf stockShelf  = stockShelfDao.getByShelfAndStock(shelf,stock);
+                if(stockShelf==null){
+                    stockShelf =  new StockShelf();
+                }
+                stockShelf.setShelf(shelf);
+                stockShelves.add(stockShelf);
+            }
+            for(Arrival arrival  :arrivals){
+                StockArrival stockArrival =  stockArrivalDao.getByArrivalAndStock(arrival,stock);
+                if(stockArrival==null){
+                    stockArrival  =new StockArrival();
+                }
+                stockArrival.setArrival(arrival);
+                stockArrivals.add(stockArrival);
+            }
+
+
+        StockFormDTO stockFormDTO =  new StockFormDTO();
+        stockFormDTO.setStock(stock);
+        stockFormDTO.setStockArrivalList(stockArrivals);
+        stockFormDTO.setStockShelfList(stockShelves);
+
+        model.addAttribute("stockForm",stockFormDTO);
+        model.addAttribute("stock",stock);
+        model.addAttribute("categories",categoryDao.getAll());
+        model.addAttribute("title", "Stok Ekle");
+
+        return "user/stock/form";
+    }
+
+    @RequestMapping(value = "create", method = RequestMethod.GET)
+    public String create(Model model){
         Stock stock= new Stock();
         List<StockShelf> stockShelves  = new ArrayList<>();
         List<StockArrival> stockArrivals =  new ArrayList<>();
         List<Arrival> arrivals;
         List<Shelf> shelves;
-        if(id==0){
 
-             stock=new Stock();
-             shelves = shelfDao.getAll();
-            arrivals = arrivalDao.getAll();
+        shelves = shelfDao.getAll();
+        arrivals = arrivalDao.getAll();
 
-            for(Shelf shelf: shelves){
-                StockShelf stockShelf  = new StockShelf();
-                stockShelf.setStock(stock);
-                stockShelf.setShelf(shelf);
-                stockShelves.add(stockShelf);
-            }
-            for(Arrival arrival  :arrivals){
-                StockArrival stockArrival =  new StockArrival();
-                stockArrival.setArrival(arrival);
-                stockArrival.setStock(stock);
-                stockArrivals.add(stockArrival);
-            }
+        for(Shelf shelf: shelves){
+            StockShelf stockShelf  = new StockShelf();
+            stockShelf.setShelf(shelf);
+            stockShelves.add(stockShelf);
+        }
 
+        for(Arrival arrival  :arrivals){
+            StockArrival stockArrival =  new StockArrival();
+            stockArrival.setArrival(arrival);
+            stockArrivals.add(stockArrival);
         }
         StockFormDTO stockFormDTO =  new StockFormDTO();
         stockFormDTO.setStock(stock);
@@ -88,9 +126,6 @@ public class StockController extends BaseController{
         model.addAttribute("title", "Stok Ekle");
 
         return "user/stock/form";
-
-
-
     }
 
     @RequestMapping(value = "save",method = RequestMethod.GET)
@@ -119,7 +154,7 @@ public class StockController extends BaseController{
         stockShelfDao.sync(stockFormDTO.getStockShelfList(),stock);
         model.addAttribute("message","Kaydedildi,eklemeye devam edebilirsiniz!");
         model.addAttribute("lastRecordId",stock.getId());
-        return show(0,model);
+        return create(model);
     }
 
     @RequestMapping(value="list")
