@@ -55,8 +55,6 @@ public class ArrivalController extends BaseController {
             return this.list(model);
         }
 
-        arrival.setCreateUser(auth.getCurrentUser());
-
         try {
             arrivalDao.saveOrUpdate(arrival);
             model.addAttribute("message", Util.saveSuccessMessage);

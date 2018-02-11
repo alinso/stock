@@ -2,6 +2,7 @@ package com.alinso.stock.dao;
 
 import com.alinso.stock.dao.BaseDAO;
 import com.alinso.stock.entity.Stock;
+import com.alinso.stock.entity.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
@@ -18,10 +19,32 @@ public class StockDao extends BaseDAO<Stock>{
     }
 
     public List<Stock> getStockListByCode(String productCode){
-        String hql="from Stock s where s.productCode like :productCode";
+        String hql="from Stock s \n" +
+                "where (s.productCode like :productCode or s.productName like :productName) \n" +
+                "and s.createUser = :user";
         Query query=super.entityManager
                 .createQuery(hql,Stock.class);
-        return query.setParameter("productCode","%"+productCode+"%").getResultList();
+        query.setParameter("productCode","%"+productCode+"%")
+                .setParameter("productName","%"+productCode+"%")
+                .setParameter("user",this.auth.getCurrentUser());
+        List<Stock> stockList=query.getResultList();
+        return stockList;
+    }
+
+    public List<Stock> getStockListByCodeDForGuests(String productCode,User user){
+        if(user ==null){
+            return null;
+        }
+        String hql="from Stock s \n" +
+                "where (s.productCode like :productCode or s.productName like :productName) \n" +
+                "and s.createUser = :user";
+        Query query=super.entityManager
+                .createQuery(hql,Stock.class);
+        query.setParameter("productCode","%"+productCode+"%")
+                .setParameter("productName","%"+productCode+"%")
+                .setParameter("user",user);
+        List<Stock> stockList=query.getResultList();
+        return stockList;
     }
 
 }

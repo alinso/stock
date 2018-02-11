@@ -3,7 +3,6 @@ package com.alinso.stock.controller;
 import com.alinso.stock.common.Util;
 import com.alinso.stock.dao.ShelfDao;
 import com.alinso.stock.entity.Shelf;
-import com.alinso.stock.security.Auth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,9 +19,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/user/shelf")
 public class ShelfController extends BaseController {
-
-    @Autowired
-    Auth auth;
 
     @Autowired
     ShelfDao shelfDao;
@@ -49,7 +45,6 @@ public class ShelfController extends BaseController {
             return this.show(shelf.getId(),model);
         }
 
-        shelf.setCreateUser(auth.getCurrentUser());
 
         try {
             shelfDao.saveOrUpdate(shelf);

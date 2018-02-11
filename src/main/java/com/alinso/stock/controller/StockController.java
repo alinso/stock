@@ -3,7 +3,6 @@ package com.alinso.stock.controller;
 import com.alinso.stock.dao.*;
 import com.alinso.stock.dto.StockFormDTO;
 import com.alinso.stock.entity.*;
-import com.alinso.stock.security.Auth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,9 +38,6 @@ public class StockController extends BaseController{
 
     @Autowired
     StockArrivalDao stockArrivalDao;
-
-    @Autowired
-    Auth auth;
 
     @PostConstruct
     public void StockControllerPC(){

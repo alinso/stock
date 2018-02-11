@@ -3,7 +3,6 @@ package com.alinso.stock.controller;
 import com.alinso.stock.common.Util;
 import com.alinso.stock.dao.CategoryDao;
 import com.alinso.stock.entity.Category;
-import com.alinso.stock.security.Auth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,9 +15,6 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("user/category")
 public class CategoryController extends BaseController {
-
-    @Autowired
-    Auth auth;
 
     @Autowired
     CategoryDao categoryDao;
@@ -62,7 +58,6 @@ public class CategoryController extends BaseController {
             return this.show(category.getId(),model);
         }
 
-        category.setCreateUser(auth.getCurrentUser());
         try {
             categoryDao.saveOrUpdate(category);
             model.addAttribute("message",Util.saveSuccessMessage);

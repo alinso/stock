@@ -23,6 +23,7 @@ public class Register {
     }
 
     @PostMapping(value = "/register")
+    //Very good name saveStudent :)
     public String saveStudent(@ModelAttribute User user, Model model) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         user.setPassword(passwordEncoder.encode(user.getPassword()));

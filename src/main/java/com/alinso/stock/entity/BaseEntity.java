@@ -16,7 +16,7 @@ public class BaseEntity implements Serializable{
     private int id;
 
 
-    @Column
+    @Column(updatable = false)
     @CreationTimestamp
     private Date createdAt;
 
@@ -26,7 +26,7 @@ public class BaseEntity implements Serializable{
 
 
     @ManyToOne
-    @JoinColumn(name="createdBy")
+    @JoinColumn(name="createdBy",updatable = false)
     private User createUser;
 
     @ManyToOne
