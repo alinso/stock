@@ -4,12 +4,15 @@
 <body>
 <nav th:replace="fragments/admin_header :: menu"></nav>
 
-<h3 th:text="*{title}"></h3>
+
 <div class="container" style="max-width:600px;padding:40px 20px;background:#ebeff2">
-    <div class="col-md-10 col-md-offset-1">
-        <br>
+
+    <br>
+    <div class="card">
+        <h5 class="card-header" th:text="*{title}"></h5>
+        <div class="card-body offset-md-1">
         <span id="formResultMessage" th:text="*{message}"></span>
-        <form class="form-inline" action="#" th:action="@{/user/arrival/save}" th:object="${entity}" method="post">
+        <form class="form-inline"  th:action="@{/user/arrival/save}" th:object="${entity}" method="post">
             <div class="form-group">
                 <label for="arrivalDate">Siparis Adı</label>
                 <input id="arrivalDate" type="text" class="form-control" th:field="*{arrivalDate}">
@@ -20,6 +23,7 @@
         </form>
 
     </div>
+</div>
 </div>
 <div th:replace="fragments/admin_footer :: footer"></div>
 </body>

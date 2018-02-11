@@ -31,7 +31,7 @@ public class ArrivalController extends BaseController {
     @PostConstruct
     public void ArrivalControllerPC(){
         super.setLinks("arrival");
-        super.setTitles("Arrival");
+        super.setTitles("Sipariş");
         super.setTheClass(Arrival.class, arrivalDao);
     }
 

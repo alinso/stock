@@ -8,11 +8,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("login")
+@RequestMapping("ekle")
 public class LoginController {
 
     @RequestMapping
     String login(){
-        return "login";
+        return "guest/login";
     }
 }

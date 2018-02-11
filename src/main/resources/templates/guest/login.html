@@ -1,0 +1,18 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head lang="en" th:replace="fragments/guest_header :: head"> </head>
+<body>
+<nav th:replace="fragments/guest_header :: menu"></nav>
+<div class="col-md-8 offset-md-2">
+<h1>Kullanıcı Girişi</h1>
+<p th:if="${loginError}" class="error">Kullanıcı adı veya şifre hatalı</p>
+<form class="form" th:action="@{/ekle}" method="post">
+    <label for="username">Kullanıcı Adı</label>:
+    <input class="form-control" type="text" id="username" name="username" autofocus="autofocus" /> <br />
+    <label for="password">Şifre</label>:
+    <input class="form-control" type="password" id="password" name="password" /> <br />
+    <input type="submit" class="form-control" value="Giriş Yap" />
+</form>
+</div>
+</body>
+</html>

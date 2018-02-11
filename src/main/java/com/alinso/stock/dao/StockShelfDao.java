@@ -45,6 +45,7 @@ public class StockShelfDao extends BaseDAO<StockShelf>{
 
 
         Integer i=0;
+        if(stockShelfList!=null)
         for (StockShelf stockShelf: stockShelfList){
 
             stockShelf.setStock(stock);

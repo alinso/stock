@@ -1,5 +1,7 @@
 package com.alinso.stock.entity;
 
+import com.alinso.stock.dto.StockSearchListDTO;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -24,6 +26,8 @@ public class Stock extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) //optional= ?
     @JoinColumn(name = "category")
     private Category category;
+
+
 
     public String getProductCode() {
         return productCode;

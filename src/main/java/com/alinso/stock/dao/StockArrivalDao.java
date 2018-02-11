@@ -54,6 +54,7 @@ public class StockArrivalDao extends BaseDAO<StockArrival>{
 
 
         Integer i=0;
+        if(stockArrivalList!=null)
         for (StockArrival stockArrival: stockArrivalList){
             stockArrival.setStock(stock);
             stockArrival.setArrival(arrivalDao.get(stockArrival.getArrival().getId()));

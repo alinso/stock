@@ -4,13 +4,16 @@
 <body>
 <nav th:replace="fragments/admin_header :: menu"></nav>
 
-<h3 th:text="*{title}"></h3>
-<div class="container" style="max-width:600px;padding:40px 20px;background:#ebeff2">
-    <div class="col-md-10 col-md-offset-1">
+
+<div class="container">
+    <br>
+    <div class="card">
+        <h5 class="card-header" th:text="*{title}"></h5>
+        <div class="card-body offset-md-1">
 
         <br/>
         <span id="formResultMessage" th:text="*{message}"></span>
-        <form class="form-inline" action="#" th:action="@{/user/category/save}" th:object="${entity}" method="post">
+        <form class="form-inline"  th:action="@{/user/category/save}" th:object="${entity}" method="post">
             <div class="form-group">
                 <label for="name">Kategori Adı</label>
                 <input id="name" type="text" class="form-control" th:field="*{name}">
@@ -20,6 +23,7 @@
             <button type="submit" class="btn btn-primary">Kaydet</button>
         </form>
     </div>
+</div>
 </div>
 <div th:replace="fragments/admin_footer :: footer"></div>
 </body>

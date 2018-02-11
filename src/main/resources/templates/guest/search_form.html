@@ -1,0 +1,43 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head lang="en" th:replace="fragments/guest_header :: head"> </head>
+<body>
+<nav th:replace="fragments/guest_header :: menu"></nav>
+
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h5 th:text="*{user.name}"></h5>
+        <form class="form"  action=""  method="post">
+            <div class="form-group">
+                <input id="prodcutCode" placeholder="Ürün Kodu veya Adı" type="text" class="form-control" name="product">
+                <input
+                        type="hidden"
+                        th:name="${_csrf.parameterName}"
+                        th:value="${_csrf.token}" />
+            </div>
+            <button type="submit" class="btn btn-primary">Ara</button>
+    </div>
+
+
+    <table class="table table-striped">
+        <thead class="table-info">
+        <tr>
+            <th>#</th>
+            <th>Ürün Kodu</th>
+            <th>Ürün Adı</th>
+            <th>Miktar</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="stock,iter:*{entities}">
+            <td th:text="${iter.index+1}"></td>
+            <td th:text="${stock.productCode}"></td>
+            <td th:text="${stock.productName}"></td>
+            <td th:text="${stock.productAmount}"></td>
+
+        </tr>
+        </tbody>
+    </table>
+
+</div>

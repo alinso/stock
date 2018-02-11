@@ -44,13 +44,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 
         http.authorizeRequests().antMatchers("/register").permitAll();
+        http.authorizeRequests().antMatchers("/firm/**").permitAll();
         http.authorizeRequests().antMatchers("/user/**").hasRole("USER");
-                http.formLogin()
-                .failureUrl("/login/error")
+                http.formLogin().loginPage("/ekle")
+                .failureUrl("/ekle?error")
                 .successHandler(customSuccessHandler);
 
         http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login").deleteCookies("JSESSIONID")
+                .logoutSuccessUrl("/ekle").deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true);
 
         //remember me configuration
